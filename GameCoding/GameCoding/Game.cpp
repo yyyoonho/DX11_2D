@@ -11,6 +11,11 @@ Game::~Game()
 
 void Game::Init(HWND hwnd)
 {
+	_hwnd = hwnd;
+	_width = GWinSizeX;
+	_height = GWinSizeY;
+
+	// TODO
 }
 
 void Game::Update()
