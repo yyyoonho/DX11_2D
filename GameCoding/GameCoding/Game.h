@@ -44,12 +44,13 @@ private:
 
 	// Misc
 	D3D11_VIEWPORT _viewport = {0};
-	float _clearColor[4] = { 0.5f, 0.5f, 0.5f,0.5f };
+	float _clearColor[4] = { 0.f, 0.f, 0.f,0.f };
 
 private:
 	// Geometry
 	vector<Vertex> _vertices;
 	ComPtr<ID3D11Buffer> _vertexBuffer = nullptr;
+	ComPtr<ID3D11InputLayout> _inputLayout = nullptr;
 
 	// VS
 	ComPtr<ID3D11VertexShader> _vertexShader = nullptr;
