@@ -6,6 +6,7 @@
 
 // STL
 #include <vector>
+#include <string>
 #include <list>
 #include <map>
 #include <unordered_map>
