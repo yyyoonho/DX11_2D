@@ -24,14 +24,20 @@ void Game::Init(HWND hwnd)
 	CreateInputLayout();
 	CreatePS();
 
+	CreateRasterizereState();
+	CreateSamplerState();
+	CreateBlendState();
+
 	CreateSRV();
 	CreateConstantBuffer();
 }
 
 void Game::Update()
 {
-	_transformData.offset.x += 0.003f;
-	_transformData.offset.y += 0.003f;
+	// SCALE - ROTATION - TRANSLATION
+
+	//_transformData.offset.x += 0.003f;
+	//_transformData.offset.y += 0.003f;
 
 	D3D11_MAPPED_SUBRESOURCE subResource;
 	ZeroMemory(&subResource, sizeof(subResource));
@@ -60,7 +66,7 @@ void Game::Render()
 		_deviceContext->VSSetConstantBuffers(0,1,_constantBuffer.GetAddressOf());
 
 		// RS
-
+		_deviceContext->RSSetState(_rasterizerState.Get());
 
 		// PS
 		_deviceContext->PSSetShader(_pixelShader.Get(), nullptr, 0);
@@ -160,7 +166,7 @@ void Game::CreateGeometry()
 		_vertices.resize(4);
 
 		_vertices[0].position = Vec3(-0.5f, -0.5f, 0.f);
-		_vertices[0].uv = Vec2(0.f, 2.f);
+		_vertices[0].uv = Vec2(0.f, 1.f);
 		//_vertices[0].color = Color(1.f, 0.f, 0.f, 1.f);
 		
 		_vertices[1].position = Vec3(-0.5f, 0.5f, 0.f);
@@ -168,11 +174,11 @@ void Game::CreateGeometry()
 		//_vertices[1].color = Color(1.f, 0.f, 0.f, 1.f);
 		
 		_vertices[2].position = Vec3(0.5f, -0.5f, 0.f);
-		_vertices[2].uv = Vec2(2.f, 2.f);
+		_vertices[2].uv = Vec2(1.f, 1.f);
 		//_vertices[2].color = Color(1.f, 0.f, 0.f, 1.f);
 
 		_vertices[3].position = Vec3(0.5f, 0.5f, 0.f);
-		_vertices[3].uv = Vec2(2.f, 0.f);
+		_vertices[3].uv = Vec2(1.f, 0.f);
 		//_vertices[3].color = Color(1.f, 0.f, 0.f, 1.f);
 	}
 
@@ -244,6 +250,27 @@ void Game::CreatePS()
 	LoadShaderFromFile(L"Default.hlsl", "PS", "ps_5_0", _psBlob);
 	HRESULT hr = _device->CreatePixelShader(_psBlob->GetBufferPointer(), _psBlob->GetBufferSize(), nullptr, _pixelShader.GetAddressOf());
 	CHECK(hr);
+}
+
+void Game::CreateRasterizereState()
+{
+	D3D11_RASTERIZER_DESC desc;
+	ZeroMemory(&desc, sizeof(desc));
+	desc.FillMode = D3D11_FILL_SOLID;
+	desc.CullMode = D3D11_CULL_BACK;
+	desc.FrontCounterClockwise = false;
+
+	HRESULT hr = _device->CreateRasterizerState(&desc, _rasterizerState.GetAddressOf());
+	CHECK(hr);
+}
+
+void Game::CreateSamplerState()
+{
+	D3D11_SAMPLER_DESC desc;
+	ZeroMemory(&desc, sizeof(desc));
+
+	_device->CreateSamplerState(&desc, _samplerState.GetAddressOf());
+
 }
 
 void Game::CreateSRV()
