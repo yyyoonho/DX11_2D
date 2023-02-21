@@ -18,8 +18,6 @@ private:
 
 private:
 	HWND _hwnd = {};
-	//uint32 _width = 0;
-	//uint32 _height = 0;
 
 private:
 	// Device & SwapChain
@@ -32,6 +30,6 @@ private:
 
 	// Misc
 	D3D11_VIEWPORT _viewport = { 0 };
-	float _clearColor[4] = { 0.f, 0.f, 0.f,0.f };
+	float _clearColor[4] = { 0.5f, 0.5f, 0.5f,0.5f };
 };
 
