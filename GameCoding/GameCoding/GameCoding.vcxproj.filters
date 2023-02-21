@@ -24,6 +24,30 @@
     <Filter Include="소스 파일\99. Headers\Utils">
       <UniqueIdentifier>{3b63989f-76be-4534-bb90-59b15c037301}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\00. Engine">
+      <UniqueIdentifier>{4884f72d-11dd-4e78-8237-4736f6ac361c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00. Engine\Pipeline">
+      <UniqueIdentifier>{b3c71769-6f33-40bb-a1e8-061bcaa1e943}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00. Engine\Pipeline\00. Geometry">
+      <UniqueIdentifier>{22b19b67-fce5-4489-956f-8bfd6c8878ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00. Engine\Pipeline\01. InputAssembler">
+      <UniqueIdentifier>{9d239ce5-fd3b-48c3-bcef-64c40bee5d6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00. Engine\Pipeline\02. VertexShader">
+      <UniqueIdentifier>{4b06ea88-4a97-4a08-8382-af4efaeef1a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00. Engine\Pipeline\03. Rasterizer">
+      <UniqueIdentifier>{32c14b80-1396-4e4e-93f1-55633f05bed0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00. Engine\Pipeline\04. PixelShader">
+      <UniqueIdentifier>{4b0e3202-f024-4555-9a55-6d2fde9e9719}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00. Engine\Pipeline\05. OutputMerger">
+      <UniqueIdentifier>{8240cbfe-ca45-41a4-a09d-89191ff6c67a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameCoding.h">
@@ -56,6 +80,9 @@
     <ClInclude Include="SimpleMath.h">
       <Filter>소스 파일\99. Headers\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>소스 파일\00. Engine\Pipeline</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameCoding.rc">
@@ -82,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="SimpleMath.cpp">
       <Filter>소스 파일\99. Headers\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>소스 파일\00. Engine\Pipeline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
