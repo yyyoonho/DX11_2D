@@ -15,29 +15,20 @@ private:
 	HWND _hwnd;
 
 	shared_ptr<Graphics> _graphics;
+	shared_ptr<Pipeline> _pipeline;
 
 private:
-	// Geometry
+
 	shared_ptr<Geometry<VertexTextureData>> _geometry;
 	shared_ptr<VertexBuffer> _vertexBuffer;
 	shared_ptr<IndexBuffer> _indexBuffer;
 	shared_ptr<InputLayout> _inputLayout;
 
-	// VS
 	shared_ptr<VertexShader> _vertexShader;
-	
-	// RS
 	shared_ptr<RasterizerState> _rasterizerState;
-
-	// PS
 	shared_ptr<PixelShader> _pixelShader;
-
-	// SRV
 	shared_ptr<Texture> _texture1;
-
 	shared_ptr<SamplerState> _samplerState;
-
-	//OM
 	shared_ptr<BlendState> _blendState;
 
 private:
