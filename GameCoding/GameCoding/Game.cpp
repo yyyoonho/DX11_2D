@@ -20,7 +20,7 @@ void Game::Init(HWND hwnd)
 	_geometry = make_shared<Geometry<VertexTextureData>>();
 	_vertexShader = make_shared<VertexShader>(_graphics->GetDevice());
 	_pixelShader = make_shared<PixelShader>(_graphics->GetDevice());
-
+	_constantBuffer = make_shared<ConstantBuffer<TransformData>>(_graphics->GetDevice(),_graphics->GetDeviceContext());
 
 	GeometryHelper::CreateRectangle(_geometry);
 	_vertexBuffer->Create(_geometry->GetVertices());
@@ -35,7 +35,8 @@ void Game::Init(HWND hwnd)
 	CreateBlendState();
 
 	CreateSRV();
-	CreateConstantBuffer();
+
+	_constantBuffer->Create();
 }
 
 void Game::Update()
@@ -53,12 +54,7 @@ void Game::Update()
 	Matrix matWorld = matScale * matRotation * matTranslation; //SRT
 	_transformData.matWorld = matWorld;
 
-	D3D11_MAPPED_SUBRESOURCE subResource;
-	ZeroMemory(&subResource, sizeof(subResource));
-
-	_graphics->GetDeviceContext()->Map(_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
-	::memcpy(subResource.pData, &_transformData, sizeof(_transformData));
-	_graphics->GetDeviceContext()->Unmap(_constantBuffer.Get(), 0);
+	_constantBuffer->CopyData(_transformData);
 }
 
 void Game::Render()
@@ -80,7 +76,7 @@ void Game::Render()
 
 		// VS
 		_deviceContext->VSSetShader(_vertexShader->GetComPtr().Get(), nullptr, 0);
-		_deviceContext->VSSetConstantBuffers(0,1,_constantBuffer.GetAddressOf());
+		_deviceContext->VSSetConstantBuffers(0,1,_constantBuffer->GetComPtr().GetAddressOf());
 
 		// RS
 		_deviceContext->RSSetState(_rasterizerState.Get());
@@ -168,18 +164,5 @@ void Game::CreateSRV()
 	CHECK(hr);
 
 	hr = CreateShaderResourceView(_graphics->GetDevice().Get(), img.GetImages(), img.GetImageCount(), md, _shaderResourceView2.GetAddressOf());
-	CHECK(hr);
-}
-
-void Game::CreateConstantBuffer()
-{
-	D3D11_BUFFER_DESC desc;
-	ZeroMemory(&desc, sizeof(desc));
-	desc.Usage = D3D11_USAGE_DYNAMIC; // CPU_Write + GPU_Read
-	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	desc.ByteWidth = sizeof(TransformData);
-	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-	HRESULT hr = _graphics->GetDevice()->CreateBuffer(&desc, nullptr, _constantBuffer.GetAddressOf());
 	CHECK(hr);
 }
