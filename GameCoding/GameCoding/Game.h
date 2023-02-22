@@ -16,7 +16,6 @@ private:
 	void CreateRasterizereState();
 	void CreateSamplerState();
 	void CreateBlendState();
-	void CreateSRV();
 
 private:
 	HWND _hwnd;
@@ -40,8 +39,7 @@ private:
 	shared_ptr<PixelShader> _pixelShader;
 
 	// SRV
-	ComPtr<ID3D11ShaderResourceView> _shaderResourceView = nullptr;
-	ComPtr<ID3D11ShaderResourceView> _shaderResourceView2 = nullptr;
+	shared_ptr<Texture> _texture1;
 
 	ComPtr<ID3D11SamplerState> _samplerState = nullptr;
 	ComPtr<ID3D11BlendState> _blendState = nullptr;
