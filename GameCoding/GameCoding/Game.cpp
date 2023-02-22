@@ -18,11 +18,17 @@ void Game::Init(HWND hwnd)
 	_indexBuffer = make_shared<IndexBuffer>(_graphics->GetDevice());
 	_inputLayout = make_shared<InputLayout>(_graphics->GetDevice());
 	_geometry = make_shared<Geometry<VertexTextureData>>();
+	_vertexShader = make_shared<VertexShader>(_graphics->GetDevice());
+	_pixelShader = make_shared<PixelShader>(_graphics->GetDevice());
 
-	CreateGeometry();
-	CreateVS();
-	CreateInputLayout();
-	CreatePS();
+
+	GeometryHelper::CreateRectangle(_geometry);
+	_vertexBuffer->Create(_geometry->GetVertices());
+	_indexBuffer->Create(_geometry->GetIndices());
+
+	_vertexShader->Create(L"Default.hlsl", "VS", "vs_5_0");
+	_inputLayout->Create(VertexTextureData::descs, _vertexShader->GetBlob());
+	_pixelShader->Create(L"Default.hlsl", "PS", "ps_5_0");
 
 	CreateRasterizereState();
 	CreateSamplerState();
@@ -73,14 +79,14 @@ void Game::Render()
 		_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		// VS
-		_deviceContext->VSSetShader(_vertexShader.Get(), nullptr, 0);
+		_deviceContext->VSSetShader(_vertexShader->GetComPtr().Get(), nullptr, 0);
 		_deviceContext->VSSetConstantBuffers(0,1,_constantBuffer.GetAddressOf());
 
 		// RS
 		_deviceContext->RSSetState(_rasterizerState.Get());
 
 		// PS
-		_deviceContext->PSSetShader(_pixelShader.Get(), nullptr, 0);
+		_deviceContext->PSSetShader(_pixelShader->GetComPtr().Get(), nullptr, 0);
 		_deviceContext->PSSetShaderResources(0,1,_shaderResourceView.GetAddressOf());
 		_deviceContext->PSSetShaderResources(1,1,_shaderResourceView2.GetAddressOf());
 		_deviceContext->PSSetSamplers(0, 1, _samplerState.GetAddressOf());
@@ -92,48 +98,6 @@ void Game::Render()
 	}
 
 	_graphics->RenderEnd();
-}
-
-void Game::CreateGeometry()
-{
-	// VertexData
-	{
-		GeometryHelper::CreateRectangle(_geometry);
-	}
-
-	// VertexBuffer
-	{
-		_vertexBuffer->Create(_geometry->GetVertices());
-	}
-
-	// IndexBuffer
-	{
-		_indexBuffer->Create(_geometry->GetIndices());
-	}
-
-}
-
-void Game::CreateInputLayout()
-{
-	// 정점 구조체를 정의했다면, 그 구조체의 각 성분이 어떤 용도인지 Direct3D 에게 알려줘야 한다.
-	// -> layout객체 활용
-
-	_inputLayout->Create(VertexTextureData::descs, _vsBlob);
-}
-
-void Game::CreateVS()
-{
-	LoadShaderFromFile(L"Default.hlsl", "VS", "vs_5_0", _vsBlob);
-	HRESULT hr = _graphics->GetDevice()->CreateVertexShader(_vsBlob->GetBufferPointer(), _vsBlob->GetBufferSize(), nullptr, _vertexShader.GetAddressOf());
-	CHECK(hr);
-
-}
-
-void Game::CreatePS()
-{
-	LoadShaderFromFile(L"Default.hlsl", "PS", "ps_5_0", _psBlob);
-	HRESULT hr = _graphics->GetDevice()->CreatePixelShader(_psBlob->GetBufferPointer(), _psBlob->GetBufferSize(), nullptr, _pixelShader.GetAddressOf());
-	CHECK(hr);
 }
 
 void Game::CreateRasterizereState()
@@ -217,23 +181,5 @@ void Game::CreateConstantBuffer()
 	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
 	HRESULT hr = _graphics->GetDevice()->CreateBuffer(&desc, nullptr, _constantBuffer.GetAddressOf());
-	CHECK(hr);
-}
-
-void Game::LoadShaderFromFile(const wstring& path, const string& name, const string& version, ComPtr<ID3DBlob>& blob)
-{
-	const uint32 compileFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
-
-	HRESULT hr = ::D3DCompileFromFile(
-		path.c_str(),
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE,
-		name.c_str(),
-		version.c_str(),
-		compileFlag,
-		0,
-		blob.GetAddressOf(),
-		nullptr);
-
 	CHECK(hr);
 }
