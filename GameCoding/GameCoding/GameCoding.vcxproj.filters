@@ -48,6 +48,9 @@
     <Filter Include="소스 파일\00. Engine\Pipeline\05. OutputMerger">
       <UniqueIdentifier>{8240cbfe-ca45-41a4-a09d-89191ff6c67a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\00. Engine\GameObject">
+      <UniqueIdentifier>{498e4691-e769-4c12-bf58-fcb20503e8a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameCoding.h">
@@ -122,6 +125,9 @@
     <ClInclude Include="Pipeline.h">
       <Filter>소스 파일\00. Engine\Pipeline</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>소스 파일\00. Engine\GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameCoding.rc">
@@ -191,9 +197,15 @@
     <ClCompile Include="Pipeline.cpp">
       <Filter>소스 파일\00. Engine\Pipeline</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>소스 파일\00. Engine\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Default.hlsl">
+      <Filter>소스 파일\98. Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Color.hlsl">
       <Filter>소스 파일\98. Shaders</Filter>
     </FxCompile>
   </ItemGroup>
