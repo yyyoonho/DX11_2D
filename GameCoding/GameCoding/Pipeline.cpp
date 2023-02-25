@@ -2,12 +2,14 @@
 #include "Pipeline.h"
 
 Pipeline::Pipeline(ComPtr<ID3D11DeviceContext> deviceContext)
-	:_deviceContext(deviceContext)
+	: _deviceContext(deviceContext)
 {
+
 }
 
 Pipeline::~Pipeline()
 {
+
 }
 
 void Pipeline::UpdatePipeline(PipelineInfo info)
@@ -17,20 +19,20 @@ void Pipeline::UpdatePipeline(PipelineInfo info)
 	_deviceContext->IASetPrimitiveTopology(info.topology);
 
 	// VS
-	if(info.vertexShader)
+	if (info.vertexShader)
 		_deviceContext->VSSetShader(info.vertexShader->GetComPtr().Get(), nullptr, 0);
-	
+
 	// RS
-	if(info.rasterizerState)
+	if (info.rasterizerState)
 		_deviceContext->RSSetState(info.rasterizerState->GetComPtr().Get());
 
 	// PS
-	if(info.pixelShader)
+	if (info.pixelShader)
 		_deviceContext->PSSetShader(info.pixelShader->GetComPtr().Get(), nullptr, 0);
 
 	// OM
-	if(info.blendState)
-	_deviceContext->OMSetBlendState(info.blendState->GetComPtr().Get(), info.blendState->GetBlendFactor(), info.blendState->GetSampleMask());
+	if (info.blendState)
+		_deviceContext->OMSetBlendState(info.blendState->GetComPtr().Get(), info.blendState->GetBlendFactor(), info.blendState->GetSampleMask());
 }
 
 void Pipeline::SetVertexBuffer(shared_ptr<VertexBuffer> buffer)
@@ -47,22 +49,20 @@ void Pipeline::SetIndexBuffer(shared_ptr<IndexBuffer> buffer)
 
 void Pipeline::SetTexture(uint32 slot, uint32 scope, shared_ptr<Texture> texture)
 {
-	if(scope&SS_VertexShader)
+	if (scope & SS_VertexShader)
 		_deviceContext->VSSetShaderResources(slot, 1, texture->GetComPtr().GetAddressOf());
-	
-	if(scope&&SS_PixelShader)
-		_deviceContext->PSSetShaderResources(slot, 1, texture->GetComPtr().GetAddressOf());
 
+	if (scope & SS_PixelShader)
+		_deviceContext->PSSetShaderResources(slot, 1, texture->GetComPtr().GetAddressOf());
 }
 
 void Pipeline::SetSamplerState(uint32 slot, uint32 scope, shared_ptr<SamplerState> samplerState)
 {
 	if (scope & SS_VertexShader)
-		_deviceContext->VSSetSamplers(slot, 1, samplerState->GetComPtr().GetAddressOf());
+		_deviceContext->VSSetSamplers(0, 1, samplerState->GetComPtr().GetAddressOf());
 
-	if (scope && SS_PixelShader)
-		_deviceContext->PSSetSamplers(slot, 1, samplerState->GetComPtr().GetAddressOf());
-
+	if (scope & SS_PixelShader)
+		_deviceContext->PSSetSamplers(0, 1, samplerState->GetComPtr().GetAddressOf());
 }
 
 void Pipeline::Draw(uint32 vertexCount, uint32 startVertexLocation)
@@ -70,7 +70,7 @@ void Pipeline::Draw(uint32 vertexCount, uint32 startVertexLocation)
 	_deviceContext->Draw(vertexCount, startVertexLocation);
 }
 
-void Pipeline::DrawIndexed(uint32 indexCount, uint32 startVertexLocation, uint32 baseVertexLocation)
+void Pipeline::DrawIndexed(uint32 indexCount, uint32 startIndexLocation, uint32 baseVertexLocation)
 {
-	_deviceContext->DrawIndexed(indexCount, startVertexLocation, baseVertexLocation);
+	_deviceContext->DrawIndexed(indexCount, startIndexLocation, baseVertexLocation);
 }

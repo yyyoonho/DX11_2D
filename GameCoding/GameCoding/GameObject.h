@@ -1,4 +1,5 @@
 #pragma once
+
 class GameObject
 {
 public:
@@ -11,25 +12,23 @@ public:
 private:
 	ComPtr<ID3D11Device> _device;
 
-	//shared_ptr<Geometry<VertexTextureData>> _geometry;
-	shared_ptr<Geometry<VertexColorData>> _geometry;
+	shared_ptr<Geometry<VertexTextureData>> _geometry;
+
 	shared_ptr<VertexBuffer> _vertexBuffer;
 	shared_ptr<IndexBuffer> _indexBuffer;
-	shared_ptr<InputLayout> _inputLayout;
-
 	shared_ptr<VertexShader> _vertexShader;
-	shared_ptr<RasterizerState> _rasterizerState;
+	shared_ptr<InputLayout> _inputLayout;
 	shared_ptr<PixelShader> _pixelShader;
-	shared_ptr<Texture> _texture1;
-	shared_ptr<SamplerState> _samplerState;
+	shared_ptr<RasterizerState> _rasterizerState;
 	shared_ptr<BlendState> _blendState;
 
-private:
 	TransformData _transformData;
-	shared_ptr<ConstantBuffer<TransformData>> _constantBuffer;
+	shared_ptr<ConstantBuffer<TransformData>> _transformBuffer;
+	shared_ptr<Texture> _texture;
 
-	Vec3 _localPosition = { 0.f, 0.f, 0.f };
-	Vec3 _localRotation = { 0.f, 0.f, 0.f };
-	Vec3 _localScale = { 1.f, 1.f, 1.f };
+private:
+	shared_ptr<Transform> _transform = make_shared<Transform>();
+
+	// TEST
+	shared_ptr<Transform> _parent = make_shared<Transform>();
 };
-

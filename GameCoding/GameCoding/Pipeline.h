@@ -2,7 +2,6 @@
 
 struct PipelineInfo
 {
-	// 모든 물체에 공용으로 적용되는 것들 모음집
 	shared_ptr<InputLayout> inputLayout;
 	shared_ptr<VertexShader> vertexShader;
 	shared_ptr<PixelShader> pixelShader;
@@ -25,8 +24,9 @@ public:
 	template<typename T>
 	void SetConstantBuffer(uint32 slot, uint32 scope, shared_ptr<ConstantBuffer<T>> buffer)
 	{
-		if(scope & SS_VertexShader)
+		if (scope & SS_VertexShader)
 			_deviceContext->VSSetConstantBuffers(slot, 1, buffer->GetComPtr().GetAddressOf());
+
 		if (scope & SS_PixelShader)
 			_deviceContext->PSSetConstantBuffers(slot, 1, buffer->GetComPtr().GetAddressOf());
 	}
@@ -35,9 +35,8 @@ public:
 	void SetSamplerState(uint32 slot, uint32 scope, shared_ptr<SamplerState> samplerState);
 
 	void Draw(uint32 vertexCount, uint32 startVertexLocation);
-	void DrawIndexed(uint32 indexCount, uint32 startVertexLocation, uint32 baseVertexLocation);
+	void DrawIndexed(uint32 indexCount, uint32 startIndexLocation, uint32 baseVertexLocation);
 
 private:
 	ComPtr<ID3D11DeviceContext> _deviceContext;
 };
-
