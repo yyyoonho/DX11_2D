@@ -42,16 +42,16 @@ public:
 
 
 private:
+	// 부모를 기준으로 하는 나의 local좌표
 	Vec3 _localScale = { 1.f, 1.f, 1.f };
 	Vec3 _localRotation = { 0.f, 0.f, 0.f };
 	Vec3 _localPosition = { 0.f, 0.f, 0.f };
 
 	// Cache
-	// 부모를 기준으로 하는 나의 local좌표
 	Matrix _matLocal = Matrix::Identity;
 	Matrix _matWorld = Matrix::Identity;
 	
-	// World 기준
+	// World 기준 (절대좌표)
 	Vec3 _scale;
 	Vec3 _rotation;
 	Vec3 _position;
