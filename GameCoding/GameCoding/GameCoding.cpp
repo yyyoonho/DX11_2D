@@ -29,8 +29,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     if (!InitInstance (hInstance, nCmdShow))
         return FALSE;
 
-    Game game;
-    game.Init(hWnd);
+    GGame->Init(hWnd);
 
     MSG msg = {};
 
@@ -45,8 +44,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         else
         {
             // TODO: Game FrameWork GO
-            game.Update();
-            game.Render();
+            GGame->Update();
+            GGame->Render();
         }
     }
 
