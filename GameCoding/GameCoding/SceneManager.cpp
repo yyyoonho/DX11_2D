@@ -50,7 +50,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		{
 			camera->GetOrAddTransform();
 			camera->AddComponent(make_shared<Camera>());
-
+			scene->AddGameObject(camera);
 		}
 	}
 
